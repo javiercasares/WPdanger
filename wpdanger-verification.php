@@ -3,10 +3,11 @@
 Plugin Name: WPdanger Verification
 Plugin URI: https://www.wpdanger.com/
 Description: Allows you to add your WPdanger Verification code to your WordPress site.
-Version: 1.0.0
+Version: 1.0.1
 Author: Javier Casares
 Author URI: https://www.javiercasares.com/
 License: GPLv2 or later
+Text Domain: wpdanger-verification
 */
 defined('ABSPATH') or die('Bye bye!');
 if ( !class_exists('wpdanger_verification') )
@@ -34,7 +35,7 @@ if ( !class_exists('wpdanger_verification') )
 				}
         if ( $ok )
         {
-          echo '<meta name="wpdanger" content="' . htmlentities(stripslashes($verification_code), ENT_COMPAT, 'UTF-8') .'">' . "\n";
+          echo '<meta name="wpdanger" content="' . wp_kses($verification_code) .'">' . "\n";
 				}
 			}
 		}	
@@ -58,16 +59,16 @@ if ( !class_exists('wpdanger_verification') )
 	{
 ?>
 		<div class="wrap">
-      <h2>WPdanger Verification</h2>
-      <p>Copy the WPdanger Verification Code and paste in below.</p>
+      <h2><?php _e('WPdanger Verification', 'wpdanger-verification'); ?></h2>
+      <p><?php _e('Copy the WPdanger Verification Code and paste in below.', 'wpdanger-verification'); ?></p>
       <form method="post" action="options.php">
 <?php
   settings_fields( 'wpdanger-verification-settings' );
 ?>
         <table class="form-table">
           <tr valign="top">
-            <th scope="row">WPdanger Verification Code</th>
-            <td scope="row"><input type="text" name="wpdanger_verification_code" value="<?php echo get_option('wpdanger_verification_code'); ?>"></td>
+            <th scope="row"><?php _e('WPdanger Verification Code', 'wpdanger-verification'); ?></th>
+            <td scope="row"><input type="text" name="wpdanger_verification_code" value="<?php echo wp_kses(get_option('wpdanger_verification_code')); ?>"></td>
           </tr>
         </table>
         <p class="submit">
@@ -78,4 +79,3 @@ if ( !class_exists('wpdanger_verification') )
 <?php
   }
 }
-?>
